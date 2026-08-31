@@ -701,12 +701,13 @@ impl RegoVM {
 
 #[cfg(test)]
 mod tests {
-    use super::{ExecutionMode, Instruction, Program, RegoVM, Result, Value};
+    use super::{ExecutionMode, Instruction, Program, RegoVM, Value};
     use alloc::sync::Arc;
     use alloc::vec;
 
+    #[allow(clippy::expect_used)]
     #[test]
-    fn execution_loops_check_memory_once_per_dispatched_instruction() -> Result<()> {
+    fn execution_loops_check_memory_once_per_dispatched_instruction() {
         let mut program = Program::new();
         program.instructions = vec![
             Instruction::LoadTrue { dest: 0 },
@@ -720,11 +721,9 @@ mod tests {
             vm.set_execution_mode(mode);
             vm.load_program(program.clone());
 
-            assert_eq!(vm.execute()?, Value::Bool(true));
+            assert_eq!(vm.execute().expect("execution succeeds"), Value::Bool(true));
             assert_eq!(vm.executed_instructions, 2);
             assert_eq!(vm.memory_check_count, vm.executed_instructions);
         }
-
-        Ok(())
     }
 }
