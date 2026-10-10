@@ -594,7 +594,7 @@ mod tests {
             layout = Layout::from_size_align(new_size, layout.align())?;
             assert_eq!(
                 first.live_bytes(),
-                if next_owner.map_or(false, |owner| core::ptr::eq(owner, &first)) {
+                if next_owner.is_some_and(|owner| core::ptr::eq(owner, &first)) {
                     new_size as u64
                 } else {
                     0
@@ -602,7 +602,7 @@ mod tests {
             );
             assert_eq!(
                 second.live_bytes(),
-                if next_owner.map_or(false, |owner| core::ptr::eq(owner, &second)) {
+                if next_owner.is_some_and(|owner| core::ptr::eq(owner, &second)) {
                     new_size as u64
                 } else {
                     0
@@ -610,7 +610,7 @@ mod tests {
             );
             assert_eq!(
                 third.live_bytes(),
-                if next_owner.map_or(false, |owner| core::ptr::eq(owner, &third)) {
+                if next_owner.is_some_and(|owner| core::ptr::eq(owner, &third)) {
                     new_size as u64
                 } else {
                     0
